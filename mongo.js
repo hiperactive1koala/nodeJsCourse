@@ -2,8 +2,7 @@ require('dotenv').config()
 
 const mongoose = require('mongoose')
 
-const url =
-    `mongodb+srv://koala:${process.env.PASSWORD}@node-cluster.abxjazt.mongodb.net/noteApp?retryWrites=true&w=majority&appName=node-cluster`
+const url = process.env.TEST_MONGODB_URI
 
 mongoose.set('strictQuery', false)
 
@@ -16,15 +15,22 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model('Note', noteSchema)
 
-// const note = new Note({
-//     content: "Football is football what can I do sometimes",
-//     important: false,
-// })
+const note = new Note({
+  content: 'Some HTML things here',
+  important: false,
+})
+const secondNote = new Note({
+  content: 'Some JS things here',
+  important: true,
+})
 
-// note.save().then(result => {
-//     console.log('SAVED');
-//     mongoose.connection.close()
-// })
+note.save().then(result => {
+  console.log('SAVED')
+})
+secondNote.save().then(result => {
+  console.log('SAVED SECOND TIME')
+  mongoose.connection.close()
+})
 
 Note.find({}).then(result => {
   result.forEach(note => {
